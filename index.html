@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-control" content="public">
 
     <link rel="stylesheet" href="/css/style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+    
 
     <title>Cotação do morango</title>
 </head>
@@ -20,22 +27,61 @@
           <h1 class="card__title">Morango Velho</h1>
           <span class="card__min-text">Mínimo</span>
           <span class="card__max-text">Máximo</span>
-          <span class="card__min">R$ 5,00</span>
-          <span class="card__max">R$ 6,00</span>
+          <span class="card__max" id="maxVelho"></span>
+          <span class="card__min" id="minVelho"></span>
         </div>
         <div class="card card--new">
           <h1 class="card__title">Morango Novo</h1>
           <span class="card__min-text">Mínimo</span>
           <span class="card__max-text">Máximo</span>
-          <span class="card__min">R$ 7,00</span>
-          <span class="card__max">R$ 8,00</span>
+          <span class="card__min" id="minNovo"></span>
+          <span class="card__max" id="maxNovo"></span>
         </div>
       <div class="last-update">
         <span class="last-update__text">Última atualização:</span>
-        <span class="last-update__date">30/03/20</span>
-        <span class="last-update__time">12:15</span>
+        <span class="last-update__date" id="atualizacao"></span>
+       
       </div>
       <span class="message">*Os preços são fornecidos somente para fins informativos.</span>
   </div>
+
+  <script>
+    // Your web app's Firebase configuration
+    (function() {
+    var firebaseConfig = {
+      apiKey: "AIzaSyB01s8rWOsY9fpXCHwesZLyu5bgVx3Ivvc",
+      authDomain: "cotacao-3e813.firebaseapp.com",
+      databaseURL: "https://cotacao-3e813.firebaseio.com",
+      projectId: "cotacao-3e813",
+      storageBucket: "cotacao-3e813.appspot.com",
+      messagingSenderId: "691090491111",
+      appId: "1:691090491111:web:4dd75bc2ba8b2e9ca4c442",
+      measurementId: "G-EN0QNYT1EQ" 
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+  }());
+
+    const minNovo = document.getElementById('minNovo');
+    const maxNovo = document.getElementById('maxNovo');
+    const minVelho = document.getElementById('minVelho');
+    const maxVelho = document.getElementById('maxVelho');
+    const atualizacao = document.getElementById('atualizacao');
+
+    let dbRef = firebase.database().ref('prices');
+
+    dbRef.child('minNovo').on('value', snap => minNovo.innerText = snap.val());
+
+    dbRef.child('maxNovo').on('value', snap => maxNovo.innerText = snap.val());
+
+    dbRef.child('minVelho').on('value', snap => minVelho.innerText = snap.val());
+
+    dbRef.child('maxVelho').on('value', snap => maxVelho.innerText = snap.val());
+
+    dbRef.child('atualizacao').on('value', snap => atualizacao.innerText = snap.val());
+
+  </script>
 </body>
 </html>
